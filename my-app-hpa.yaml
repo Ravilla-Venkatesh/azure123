@@ -1,4 +1,4 @@
-apiVersion: autoscaling/v2beta2
+apiVersion: autoscaling/v2beta1  # Change to v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
   name: my-app-hpa
@@ -7,10 +7,10 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: my-app-deployment
-  minReplicas: 2          # Minimum number of replicas
-  maxReplicas: 10         # Maximum number of replicas
+  minReplicas: 2
+  maxReplicas: 10
   metrics:
   - type: Resource
     resource:
       name: cpu
-      targetAverageUtilization: 50   # Target CPU utilization percentage for scaling
+      targetAverageUtilization: 50
