@@ -1,18 +1,47 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: calculator
+  name: dotnet-app
 spec:
-  replicas: 2
+  replicas: 3
+  selector:
+    matchLabels:
+      app: dotnet-app
   template:
     metadata:
       labels:
-        app: calculator
+        app: dotnet-app
     spec:
       containers:
-      - name: calculator
-        image: <image>:$version
-        ports:
-        - containerPort: 8080
-      imagePullSecrets:
-      - name: <imagePullSecrets>
+        - name: dotnet-app
+          image: your-dotnet-image:tag
+          ports:
+            - containerPort: 80
+          # Add Liveness Probe
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 80
+          # Add Readiness Probe
+          readinessProbe:
+            httpGet:
+              path: /readiness
+              port: 80
+          # Add ConfigMap Volume
+          volumeMounts:
+            - name: config-volume
+              mountPath: /path/to/config
+      # ConfigMap Volume definition
+      volumes:
+        - name: config-volume
+          configMap:
+            name: my-config
+            items:
+              - key: config.yaml
+                path: config.yaml
+  # Add RollingUpdate strategy
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
