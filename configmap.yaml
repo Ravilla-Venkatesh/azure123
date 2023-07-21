@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  # Add your configuration here
+  app-settings: |
+    key1: value1
+    key2: value2
