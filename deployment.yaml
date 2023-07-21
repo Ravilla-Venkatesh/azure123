@@ -1,39 +1,35 @@
-apiVersion: apps/v1
+[12:56 am, 13/07/2023] Rajashekhar Reddy CT: apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app-deployment
+  name: dotnetdemo 
+  namespace: venky
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
-      app: my-app
+      app: dotnetdemo
   template:
     metadata:
       labels:
-        app: my-app
+        app: dotnetdemo
     spec:
       containers:
-        - name: app-container
-          image: your-dotnet-docker-image:tag
+        - name: dotnetdemo
+          image: kubedkr.azurecr.io/dotnet-web:latest
           ports:
-            - containerPort: 80
-          livenessProbe:
-            httpGet:
-              path: /healthz   # Change this path to the correct endpoint for your application health check
-              port: 80
-            initialDelaySeconds: 15
-            periodSeconds: 10
-          readinessProbe:
-            httpGet:
-              path: /readyz    # Change this path to the correct endpoint for your application readiness check
-              port: 80
-            initialDelaySeconds: 5
-            periodSeconds: 5
-          envFrom:
-            - configMapRef:
-                name: app-config
-      strategy:
-        type: RollingUpdate
-        rollingUpdate:
-          maxUnavailable: 1
-          maxSurge: 1
+            - containerPort: 5000
+      imagePullSecrets:
+        - name: macbook
+[12:56 am, 13/07/2023] Rajashekhar Reddy CT: apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+  namespace: venky
+spec:
+  selector:
+    app: dotnetdemo
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
