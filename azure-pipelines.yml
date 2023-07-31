@@ -19,7 +19,7 @@ variables:
   imagePullSecret: 'ravilla1486540c-auth'
 
   # Agent VM image name
-  vmImageName: 'bot'
+  vmImageName: 'mypool'
 
 
 stages:
