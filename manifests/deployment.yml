@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: ravillavenkateshazure 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ravillavenkateshazure
+  template:
+    metadata:
+      labels:
+        app: ravillavenkateshazure 
+    spec:
+      containers:
+        - name: ravillavenkateshazure 
+          image: ravilla.azurecr.io/ravillavenkateshazure
+          ports:
+          - containerPort: 5000
